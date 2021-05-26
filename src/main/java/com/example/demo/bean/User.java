@@ -11,35 +11,36 @@ import java.io.Serializable;
 @Table(name = "user")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class User implements Serializable {
+    private static final long serialVersionUID = -5144055068797033748L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int user_id;
+    private int id;
 
-    @Column(name = "nickName")
-    private String user_nickName;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "phoneNum")
-    private String user_phoneNum;
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "password")
-    private String user_pwd;
+    private String password;
 
     @Column(name = "address")
-    private String user_ads;
+    private String address;
 
-    public int getUserId() {return user_id;}
-    public String getUserNickName() {return user_phoneNum;}
-    public String getUserPhoneNum() {return user_phoneNum;}
-    public String getUserAddress() {return user_ads;}
-    public String getUserPassword() {return user_pwd;}
+    public int getId() {return id;}
+    public String getName() {return name;}
+    public String getPhone() {return phone;}
+    public String getAddress() {return address;}
+    public String getPassword() {return password;}
 
-    public void setId(int userId) { this.user_id = userId; }
-    public void setNickName(String userNickName) {this.user_nickName = userNickName;}
-    public void setPhoneNum(String userPhoneNum) {this.user_phoneNum = userPhoneNum;}
-    public void setPassword(String userPassword) {this.user_pwd = userPassword;}
-    public void setAddress(String userAddress) {this.user_ads = userAddress;}
+//    public void setId(int userId) { this.id = userId; }
+//    public void setNickName(String userNickName) {this.nickName = userNickName;}
+//    public void setPhoneNum(String userPhoneNum) {this.phoneNum = userPhoneNum;}
+//    public void setPassword(String userPassword) {this.password = userPassword;}
+//    public void setAddress(String userAddress) {this.address = userAddress;}
 
 
 }

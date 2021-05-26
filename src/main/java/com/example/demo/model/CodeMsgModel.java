@@ -25,6 +25,10 @@ public class CodeMsgModel {
     public static CodeMsgModel USER_NOT_EXIST = new CodeMsgModel(501,"用户名不存在");
     public static CodeMsgModel PASSWORD_ERROR = new CodeMsgModel(502,"密码错误");
     public static CodeMsgModel TOKEN_INVALID = new CodeMsgModel(504,"token无效");
+    public static CodeMsgModel BIND_ERROR = new CodeMsgModel(505, "参数校验异常");
+    public static CodeMsgModel SERVER_ERROR = new CodeMsgModel(506, "服务端异常");
+
+
 
 
 

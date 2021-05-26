@@ -13,4 +13,5 @@ public class GlobalException extends RuntimeException{
     }
 
     public CodeMsgModel getCm() {return cm;}
+
 }

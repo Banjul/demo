@@ -1,6 +1,11 @@
 package com.example.demo.model;
 
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class ResultModel<T> {
     private int code;
     private String msg;
@@ -24,4 +29,12 @@ public class ResultModel<T> {
         return new ResultModel<T>(200, "成功", data);
     }
     public static <T> ResultModel<T> error(CodeMsgModel codeMsgModel) {return new ResultModel<T>(codeMsgModel);}
+
+    public JSONObject getJSONObject(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("code",this.code);
+        map.put("msg",this.msg);
+        JSONObject jsonObject = new JSONObject(map);
+        return jsonObject;
+    }
 }

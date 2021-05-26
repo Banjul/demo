@@ -1,5 +1,10 @@
 package com.example.demo.model;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class ResponseModel {
     private String status;
     private String message;
@@ -28,4 +33,6 @@ public class ResponseModel {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
 }

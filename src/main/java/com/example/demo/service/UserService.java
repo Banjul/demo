@@ -12,4 +12,5 @@ public interface UserService {
     String login(HttpServletResponse response, String userPhone, String userPassword);
     User getUserByToken(HttpServletResponse response, String token);
     User getLoginUser(HttpServletRequest request, HttpServletResponse response);
+//    String getUserInRedis();
 }

@@ -1,21 +1,23 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.bean.User;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.ResponseModel;
 import com.example.demo.model.ResultModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.UserService;
+import com.example.demo.util.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -24,6 +26,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisUtil redisUtil;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @ApiOperation(value = "用户注册", httpMethod = "POST", notes = "手机号唯一")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -53,12 +60,26 @@ public class UserController {
 
     @ApiOperation(value = "用户登录", httpMethod = "POST")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResultModel<String> login(HttpServletResponse response, @RequestBody UserModel userModel){
-        String userPhoneNum = userModel.getPhoneNum();
-        String userPassword = userModel.getPassword();
+    public JSONObject login(HttpServletResponse response, @RequestBody Map<String,Object> params){
+        System.out.println(params);
 
-        //用户登录，返回token
+        String userPhoneNum = params.get("phone").toString();
+        String userPassword = params.get("password").toString();
         String token = userService.login(response,userPhoneNum,userPassword);
-        return ResultModel.success(token);
+        System.out.println(ResultModel.success(token).getJSONObject());
+        return ResultModel.success(token).getJSONObject();
+
+    }
+    @GetMapping(value = "/testRedis")
+    public String testRedis(HttpServletRequest request, HttpServletResponse response){
+        User user = userService.getLoginUser(request,response);
+        if(user != null)
+            return user.toString();
+        return "No users in Redis";
+    }
+
+    @GetMapping(value = "/cleanRedis")
+    public void cleanRedis(HttpServletRequest request){
+        redisUtil.clean();
     }
 }

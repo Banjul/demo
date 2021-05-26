@@ -1,8 +1,9 @@
 package com.example.demo.serviceImpl;
 
+import com.example.demo.dao.UserDao;
+import com.example.demo.mapper.UserMapper;
 import org.springframework.util.StringUtils;
 import com.example.demo.bean.User;
-import com.example.demo.dao.UserDao;
 import com.example.demo.exception.GlobalException;
 import com.example.demo.model.CodeMsgModel;
 import com.example.demo.service.UserService;
@@ -15,13 +16,14 @@ import com.alibaba.fastjson.JSON;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sound.midi.SysexMessage;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
+//    private UserMapper userMapper;
     private UserDao userDao;
-
     @Autowired
     private RedisUtil redisUtil;
     public static final String COOKIE_TOKEN_NAME ="token";
@@ -41,14 +43,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(HttpServletResponse response, String userPhone, String userPassword) {
         User user = userDao.findByPhone(userPhone);
+//        System.out.println(user);
         //判断用户是否注册
         if(user == null) throw new GlobalException(CodeMsgModel.USER_NOT_EXIST);
         //判断密码
-        String realPassword = user.getUserPassword();
+        String realPassword = user.getPassword();
         if(!realPassword.equals(userPassword)) throw new GlobalException(CodeMsgModel.PASSWORD_ERROR);
 
         //生成cookie
         String token = UUID.randomUUID().toString().replace("-","");
+//        System.out.println(token);
+//        System.out.println(user);
         addCookie(response, token, user);
         return token;
     }
@@ -74,6 +79,10 @@ public class UserServiceImpl implements UserService {
         return getUserByToken(response, token);
     }
 
+//    @Override
+//    public String getUserInRedis() {
+//    }
+
     private String getCookieValue(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
         if(cookies == null || cookies.length == 0)
@@ -89,7 +98,10 @@ public class UserServiceImpl implements UserService {
 
     private void addCookie(HttpServletResponse response,String token, User user){
         //token 存入redis
-        redisUtil.set(COOKIE_TOKEN_NAME+"::"+token, JSON.toJSONString(user),TOKEN_EXPIRE);
+        System.out.println(user);
+        String jsonUser = JSON.toJSONString(user);
+        System.out.println(jsonUser);
+        redisUtil.set(COOKIE_TOKEN_NAME+"::"+token, jsonUser,TOKEN_EXPIRE);
         //token写入cookie
         Cookie cookie = new Cookie(COOKIE_TOKEN_NAME, token);
         cookie.setMaxAge(TOKEN_EXPIRE);

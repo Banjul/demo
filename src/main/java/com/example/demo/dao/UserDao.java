@@ -13,12 +13,16 @@ import javax.transaction.Transactional;
 @Repository
 public interface UserDao extends JpaRepository<User,Integer> {
 
-    @Query(value = "select * from user where phoneNum =?1", nativeQuery = true)
+    /**
+     * 查找
+     * @param phoneNum
+     */
+    @Query(value = "select * from user where phone =?1", nativeQuery = true)
     User findByPhone(String phoneNum);
 
     @Modifying
     @Transactional
-    @Query(value = "insert into user(nickName,password,address,phoneNum) values(?1,?2,null,?3)", nativeQuery = true)
+    @Query(value = "insert into user(name,password,address,phone) values(?1,?2,null,?3)", nativeQuery = true)
     int addUser(String nickName, String userPassword, String userPhoneNum);
 
 
