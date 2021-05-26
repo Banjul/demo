@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.bean.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.CurrentUser;
 import com.example.demo.model.ResponseModel;
 import com.example.demo.model.ResultModel;
 import com.example.demo.model.UserModel;
@@ -81,5 +82,9 @@ public class UserController {
     @GetMapping(value = "/cleanRedis")
     public void cleanRedis(HttpServletRequest request){
         redisUtil.clean();
+    }
+    @GetMapping(value = "/home")
+    public String homePage(@CurrentUser User user, HttpServletRequest request){
+        return "Welcome!";
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.util.AuthenticationInterceptor;
 import com.example.demo.util.UserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,11 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
     @Autowired
     UserArgumentResolver userArgumentResolver;
+
+    @Bean
+    public AuthenticationInterceptor loginRequiredInterceptor() {
+        return new AuthenticationInterceptor();
+    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
